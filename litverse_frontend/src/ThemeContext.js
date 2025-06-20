@@ -14,7 +14,8 @@ export const useTheme = () => useContext(ThemeContext);
 
 /**
  * PUBLIC_INTERFACE
- * ThemeProvider wraps children, manages theme state, persists it in localStorage, and adds Tailwind dark mode class to <html>.
+ * ThemeProvider wraps children, manages theme state, persists it in localStorage,
+ * and adds Tailwind dark mode class to <html>. Smooth fade transition is supported via Tailwind transition.
  */
 export function ThemeProvider({ children }) {
   // Get from localStorage or default to 'light'
@@ -31,13 +32,21 @@ export function ThemeProvider({ children }) {
     } else {
       root.classList.remove("dark");
     }
-    // Save preference
+    // Save preference for persistence
     window.localStorage.setItem("theme", theme);
+
+    // Add fade transition for smooth theme switching
+    root.style.transition = "background-color 0.4s, color 0.4s";
+    // Remove after transition finishes to avoid affecting interactions
+    return () => {
+      root.style.transition = "";
+    };
   }, [theme]);
 
   /**
    * PUBLIC_INTERFACE
    * Toggle between dark and light themes.
+   * (UI handles animation - see container components)
    */
   const toggleTheme = () =>
     setTheme((prev) => (prev === "dark" ? "light" : "dark"));

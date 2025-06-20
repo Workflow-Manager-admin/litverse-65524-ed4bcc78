@@ -2,10 +2,11 @@
    primary: #011d03
    secondary: #4b5563 (gray-600)
    accent: #facc15 (yellow-400)
-   See Tailwind config for extended usage
+   See Tailwind config for production usage
 */
 
-/* Utility classes are provided via Tailwind; minimal custom CSS is needed. */
+/* All major visual style and interaction is handled by Tailwind CSS utility classes. Only add custom CSS if absolutely needed. */
+
 body, html, #root {
   font-family: 'Inter', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
   background-color: white;

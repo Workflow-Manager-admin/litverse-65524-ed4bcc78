@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 /**
  * PUBLIC_INTERFACE
- * BrowseNovels - Modern responsive card layout with branded accents, search, loading/empty states.
+ * BrowseNovels - Responsive, high-polish card layout for book discovery with LitVerse visual identity.
  */
 const BrowseNovels = ({ onSelectBook }) => {
   const [books, setBooks] = useState([]);
@@ -31,14 +31,14 @@ const BrowseNovels = ({ onSelectBook }) => {
   }, [search]);
 
   return (
-    <section className="py-10">
-      <h2 className="text-3xl font-extrabold mb-6 text-primary dark:text-accent drop-shadow-sm">
+    <section className="py-8">
+      <h2 className="text-3xl font-extrabold mb-7 text-primary dark:text-accent drop-shadow-lg tracking-tight">
         Browse Public Domain Novels
       </h2>
-      <div className="mb-7">
+      <div className="mb-7 flex flex-col sm:flex-row sm:items-center gap-2">
         <input
           type="text"
-          className="px-5 py-2.5 border-2 border-accent/40 rounded-lg w-full max-w-md mb-2 focus:ring-2 focus:ring-accent focus:outline-none bg-white dark:bg-darkCard text-lg font-medium text-primary dark:text-accent placeholder:text-gray-400 transition"
+          className="px-5 py-3 border-2 border-accent/40 rounded-xl w-full max-w-md focus:ring-2 focus:ring-accent focus:outline-none bg-white dark:bg-darkCard text-lg font-semibold text-primary dark:text-accent placeholder:text-gray-400 shadow-lg transition-all"
           value={search}
           placeholder="Search by title or author..."
           onChange={(e) => setSearch(e.target.value)}
@@ -46,7 +46,7 @@ const BrowseNovels = ({ onSelectBook }) => {
         />
       </div>
       {loading && (
-        <div className="text-secondary dark:text-gray-300 font-medium">
+        <div className="text-secondary dark:text-gray-300 font-medium text-lg animate-pulse">
           Loading novels...
         </div>
       )}
@@ -66,7 +66,7 @@ const BrowseNovels = ({ onSelectBook }) => {
             return (
               <button
                 key={book.id}
-                className="group bg-white dark:bg-darkCard rounded-xl border-2 border-gray-200 dark:border-gray-700 shadow-modern flex flex-col h-full p-0 cursor-pointer overflow-hidden focus:outline-accent hover:shadow-xl hover:border-accent ring-0 transition-all"
+                className="group bg-white/95 dark:bg-darkCard rounded-xl border-2 border-gray-200 dark:border-gray-800 shadow-2xl flex flex-col h-full p-0 cursor-pointer overflow-hidden focus:outline-none focus:ring-2 focus:ring-accent/70 hover:shadow-[0_8px_36px_0_rgba(250,204,21,0.18)] hover:border-accent hover:scale-105 transition-all duration-200"
                 onClick={() => onSelectBook && onSelectBook(book)}
                 tabIndex={0}
                 type="button"
@@ -77,7 +77,7 @@ const BrowseNovels = ({ onSelectBook }) => {
                     <img
                       src={thumb}
                       alt={`Cover for ${book.title}`}
-                      className="object-contain block rounded-t-xl mx-auto max-h-44 w-full bg-transparent transition-all duration-150 group-hover:scale-105"
+                      className="object-contain block rounded-t-xl max-h-44 w-full transition-all duration-150 group-hover:scale-105"
                       loading="lazy"
                     />
                   </div>
@@ -90,17 +90,18 @@ const BrowseNovels = ({ onSelectBook }) => {
                   <div className="font-bold text-lg text-primary dark:text-accent mb-1 truncate" title={book.title}>
                     {book.title}
                   </div>
-                  <div className="text-sm text-secondary dark:text-gray-400">
+                  <div className="text-sm text-secondary dark:text-gray-400 truncate">
                     {authors}
                   </div>
                 </div>
-                <div className="w-full h-[5px] bg-accent/80 opacity-0 group-hover:opacity-100 transition" />
+                {/* animated accent bar on hover */}
+                <div className="w-full h-[5px] bg-accent/80 opacity-0 group-hover:opacity-100 group-hover:translate-y-0 -translate-y-2 transition-all duration-200" />
               </button>
             );
           })}
       </div>
       {!loading && !error && books.length === 0 && (
-        <div className="mt-6 text-secondary italic">
+        <div className="mt-6 text-secondary italic text-lg">
           No results found.
         </div>
       )}
