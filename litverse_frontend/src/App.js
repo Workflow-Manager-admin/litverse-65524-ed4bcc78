@@ -7,10 +7,10 @@ import Navbar from './components/Navbar';
 function AppContent() {
   return (
     <div className="app min-h-screen bg-white dark:bg-[#18181b] transition-colors">
-      {/* Responsive Navbar fixed at top */}
+      {/* Static Navbar fixed at top */}
       <Navbar />
       {/* Add top padding to prevent content being hidden under fixed navbar */}
-      <main className="pt-20 sm:pt-20">
+      <main className="pt-20">
         <div className="container">
           <div className="hero">
             <div className="subtitle">A modern, responsive online novel reader</div>
