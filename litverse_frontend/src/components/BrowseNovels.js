@@ -2,16 +2,13 @@ import React, { useEffect, useState } from "react";
 
 /**
  * PUBLIC_INTERFACE
- * BrowseNovels - Fetches and displays list of public domain books from the Gutendex API.
- * Users can see title, author(s), and cover image (if available).
- * Selecting a book will trigger a callback with book details (for future integration with reader view).
+ * BrowseNovels - Modern responsive card layout with branded accents, search, loading/empty states.
  */
 const BrowseNovels = ({ onSelectBook }) => {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Minimal search interface - static query for demo (could expand)
   const [search, setSearch] = useState("");
 
   useEffect(() => {
@@ -34,63 +31,80 @@ const BrowseNovels = ({ onSelectBook }) => {
   }, [search]);
 
   return (
-    <div className="py-8">
-      <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">Browse Public Domain Novels</h2>
-      <div className="mb-5">
+    <section className="py-10">
+      <h2 className="text-3xl font-extrabold mb-6 text-primary dark:text-accent drop-shadow-sm">
+        Browse Public Domain Novels
+      </h2>
+      <div className="mb-7">
         <input
           type="text"
-          className="px-4 py-2 border border-gray-300 rounded w-full max-w-md mb-2 dark:bg-[#232329] dark:border-gray-600 dark:text-white"
+          className="px-5 py-2.5 border-2 border-accent/40 rounded-lg w-full max-w-md mb-2 focus:ring-2 focus:ring-accent focus:outline-none bg-white dark:bg-darkCard text-lg font-medium text-primary dark:text-accent placeholder:text-gray-400 transition"
           value={search}
           placeholder="Search by title or author..."
           onChange={(e) => setSearch(e.target.value)}
+          aria-label="Search novels"
         />
       </div>
-      {loading && <div className="text-gray-600 dark:text-gray-300">Loading novels...</div>}
+      {loading && (
+        <div className="text-secondary dark:text-gray-300 font-medium">
+          Loading novels...
+        </div>
+      )}
       {error && <div className="text-red-500">{error}</div>}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {!loading && !error && books.map((book) => {
-          const thumb =
-            book.formats["image/jpeg"] ||
-            (book.formats["image/png"] || null);
-          const authors =
-            book.authors.length > 0
-              ? book.authors.map((a) => a.name).join(", ")
-              : "Unknown author";
-          return (
-            <div
-              key={book.id}
-              className="bg-white dark:bg-[#18181b] rounded shadow border border-gray-200 dark:border-gray-700 p-4 flex flex-col cursor-pointer hover:shadow-lg transition"
-              onClick={() => onSelectBook && onSelectBook(book)}
-              tabIndex={0}
-              role="button"
-              aria-label={`Open ${book.title} by ${authors}`}
-              style={{ minHeight: "200px" }}
-            >
-              {thumb ? (
-                <img
-                  src={thumb}
-                  alt={`Cover for ${book.title}`}
-                  className="w-full h-40 object-cover rounded mb-3 border border-gray-100 dark:border-gray-800"
-                  loading="lazy"
-                  style={{ background: "#eee", objectFit: "contain" }}
-                />
-              ) : (
-                <div className="w-full h-40 bg-gray-100 dark:bg-gray-800 rounded mb-3 flex items-center justify-center text-gray-400">
-                  No Image
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-7">
+        {!loading &&
+          !error &&
+          books.map((book) => {
+            const thumb =
+              book.formats["image/jpeg"] ||
+              book.formats["image/png"] ||
+              null;
+            const authors =
+              book.authors.length > 0
+                ? book.authors.map((a) => a.name).join(", ")
+                : "Unknown author";
+            return (
+              <button
+                key={book.id}
+                className="group bg-white dark:bg-darkCard rounded-xl border-2 border-gray-200 dark:border-gray-700 shadow-modern flex flex-col h-full p-0 cursor-pointer overflow-hidden focus:outline-accent hover:shadow-xl hover:border-accent ring-0 transition-all"
+                onClick={() => onSelectBook && onSelectBook(book)}
+                tabIndex={0}
+                type="button"
+                aria-label={`Open ${book.title} by ${authors}`}
+              >
+                {thumb ? (
+                  <div className="w-full h-44 bg-neutral-100 dark:bg-darkBg flex items-center justify-center">
+                    <img
+                      src={thumb}
+                      alt={`Cover for ${book.title}`}
+                      className="object-contain block rounded-t-xl mx-auto max-h-44 w-full bg-transparent transition-all duration-150 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                  </div>
+                ) : (
+                  <div className="w-full h-44 bg-accent/30 dark:bg-darkBg rounded-t-xl flex items-center justify-center text-4xl text-accent font-extrabold select-none">
+                    ?
+                  </div>
+                )}
+                <div className="flex-1 flex flex-col p-4 gap-1 justify-between">
+                  <div className="font-bold text-lg text-primary dark:text-accent mb-1 truncate" title={book.title}>
+                    {book.title}
+                  </div>
+                  <div className="text-sm text-secondary dark:text-gray-400">
+                    {authors}
+                  </div>
                 </div>
-              )}
-              <div className="font-semibold text-base mb-1 text-gray-800 dark:text-gray-100">
-                {book.title}
-              </div>
-              <div className="text-sm text-gray-500 dark:text-gray-400">{authors}</div>
-            </div>
-          );
-        })}
+                <div className="w-full h-[5px] bg-accent/80 opacity-0 group-hover:opacity-100 transition" />
+              </button>
+            );
+          })}
       </div>
       {!loading && !error && books.length === 0 && (
-        <div className="mt-4 text-gray-500">No results found.</div>
+        <div className="mt-6 text-secondary italic">
+          No results found.
+        </div>
       )}
-    </div>
+    </section>
   );
 };
 
