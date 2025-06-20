@@ -26,18 +26,28 @@ const Navbar = ({ onNav }) => {
   }
 
   return (
-    <header className="navbar">
+    <header className="navbar" style={{ width: "100vw", left: 0, right: 0, padding: 0, margin: 0 }}>
       <nav className="navbar-content" role="navigation">
-        {/* Logo box and brand */}
+        {/* Logo and brand horizontal flex row */}
         <a
           href="/"
           aria-label="LitVerse Home"
-          className="flex items-center group"
+          className="navbar-brand-combo"
           tabIndex={0}
-          style={{ textDecoration: 'none' }}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            textDecoration: "none",
+            gap: "0.45rem"
+          }}
         >
-          <span className="logo-box">L</span>
-          <span className="nav-brand">LitVerse</span>
+          {/* If you want to use an image as logo, replace span with img src and adjust class */}
+          {/* Decreased logo box size */}
+          {/* To swap with an image, replace <span className="logo-box"> with <img ... className="logo-img" /> */}
+          <span className="logo-box" style={{ width: "2rem", height: "2rem", fontSize: "1.25rem", marginRight: "0.40rem" }}>
+            L
+          </span>
+          <span className="nav-brand" style={{marginTop: 0}}>LitVerse</span>
         </a>
         <div className="nav-links">
           {navLinks.map((link) => (
