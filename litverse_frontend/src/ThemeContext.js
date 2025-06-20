@@ -15,7 +15,7 @@ export const useTheme = () => useContext(ThemeContext);
 /**
  * PUBLIC_INTERFACE
  * ThemeProvider wraps children, manages theme state, persists it in localStorage,
- * and adds Tailwind dark mode class to <html>. Smooth fade transition is supported via Tailwind transition.
+ * and toggles .dark-theme class for dark mode support in standard CSS.
  */
 export function ThemeProvider({ children }) {
   // Get from localStorage or default to 'light'
@@ -25,28 +25,24 @@ export function ThemeProvider({ children }) {
   });
 
   useEffect(() => {
-    // Set <html> class for Tailwind dark mode
-    const root = window.document.documentElement;
+    // Set .dark-theme class on <body>
     if (theme === "dark") {
-      root.classList.add("dark");
+      document.body.classList.add("dark-theme");
     } else {
-      root.classList.remove("dark");
+      document.body.classList.remove("dark-theme");
     }
     // Save preference for persistence
     window.localStorage.setItem("theme", theme);
-
-    // Add fade transition for smooth theme switching
-    root.style.transition = "background-color 0.4s, color 0.4s";
-    // Remove after transition finishes to avoid affecting interactions
+    // Smooth color transition
+    document.body.style.transition = "background-color 0.4s, color 0.4s";
     return () => {
-      root.style.transition = "";
+      document.body.style.transition = "";
     };
   }, [theme]);
 
   /**
    * PUBLIC_INTERFACE
    * Toggle between dark and light themes.
-   * (UI handles animation - see container components)
    */
   const toggleTheme = () =>
     setTheme((prev) => (prev === "dark" ? "light" : "dark"));

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 /**
  * PUBLIC_INTERFACE
- * BrowseNovels - Responsive, high-polish card layout for book discovery with LitVerse visual identity.
+ * BrowseNovels - Responsive, high-polish card layout for book discovery with LitVerse visual identity (CSS-only).
  */
 const BrowseNovels = ({ onSelectBook }) => {
   const [books, setBooks] = useState([]);
@@ -31,14 +31,14 @@ const BrowseNovels = ({ onSelectBook }) => {
   }, [search]);
 
   return (
-    <section className="py-8">
-      <h2 className="text-3xl font-extrabold mb-7 text-primary dark:text-accent drop-shadow-lg tracking-tight">
+    <section className="browse-novels-section container">
+      <h2 className="browse-novels-title">
         Browse Public Domain Novels
       </h2>
-      <div className="mb-7 flex flex-col sm:flex-row sm:items-center gap-2">
+      <div className="search-bar-row">
         <input
           type="text"
-          className="px-5 py-3 border-2 border-accent/40 rounded-xl w-full max-w-md focus:ring-2 focus:ring-accent focus:outline-none bg-white dark:bg-darkCard text-lg font-semibold text-primary dark:text-accent placeholder:text-gray-400 shadow-lg transition-all"
+          className="novel-search-input"
           value={search}
           placeholder="Search by title or author..."
           onChange={(e) => setSearch(e.target.value)}
@@ -46,12 +46,12 @@ const BrowseNovels = ({ onSelectBook }) => {
         />
       </div>
       {loading && (
-        <div className="text-secondary dark:text-gray-300 font-medium text-lg animate-pulse">
+        <div className="loading-state">
           Loading novels...
         </div>
       )}
-      {error && <div className="text-red-500">{error}</div>}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-7">
+      {error && <div className="error-state">{error}</div>}
+      <div className="novel-card-grid">
         {!loading &&
           !error &&
           books.map((book) => {
@@ -66,42 +66,35 @@ const BrowseNovels = ({ onSelectBook }) => {
             return (
               <button
                 key={book.id}
-                className="group bg-white/95 dark:bg-darkCard rounded-xl border-2 border-gray-200 dark:border-gray-800 shadow-2xl flex flex-col h-full p-0 cursor-pointer overflow-hidden focus:outline-none focus:ring-2 focus:ring-accent/70 hover:shadow-[0_8px_36px_0_rgba(250,204,21,0.18)] hover:border-accent hover:scale-105 transition-all duration-200"
+                className="novel-card"
                 onClick={() => onSelectBook && onSelectBook(book)}
                 tabIndex={0}
                 type="button"
                 aria-label={`Open ${book.title} by ${authors}`}
               >
                 {thumb ? (
-                  <div className="w-full h-44 bg-neutral-100 dark:bg-darkBg flex items-center justify-center">
+                  <div className="novel-card-thumb">
                     <img
                       src={thumb}
                       alt={`Cover for ${book.title}`}
-                      className="object-contain block rounded-t-xl max-h-44 w-full transition-all duration-150 group-hover:scale-105"
                       loading="lazy"
                     />
                   </div>
                 ) : (
-                  <div className="w-full h-44 bg-accent/30 dark:bg-darkBg rounded-t-xl flex items-center justify-center text-4xl text-accent font-extrabold select-none">
-                    ?
-                  </div>
+                  <div className="novel-card-noimg">?</div>
                 )}
-                <div className="flex-1 flex flex-col p-4 gap-1 justify-between">
-                  <div className="font-bold text-lg text-primary dark:text-accent mb-1 truncate" title={book.title}>
+                <div className="novel-card-body">
+                  <div className="novel-card-title" title={book.title}>
                     {book.title}
                   </div>
-                  <div className="text-sm text-secondary dark:text-gray-400 truncate">
-                    {authors}
-                  </div>
+                  <div className="novel-card-author">{authors}</div>
                 </div>
-                {/* animated accent bar on hover */}
-                <div className="w-full h-[5px] bg-accent/80 opacity-0 group-hover:opacity-100 group-hover:translate-y-0 -translate-y-2 transition-all duration-200" />
               </button>
             );
           })}
       </div>
       {!loading && !error && books.length === 0 && (
-        <div className="mt-6 text-secondary italic text-lg">
+        <div className="empty-state">
           No results found.
         </div>
       )}

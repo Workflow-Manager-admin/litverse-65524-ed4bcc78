@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useTheme } from "../ThemeContext";
 
 /**
@@ -7,6 +7,11 @@ import { useTheme } from "../ThemeContext";
  */
 const Navbar = ({ onNav }) => {
   const { theme, toggleTheme } = useTheme();
+
+  // Set theme class on body
+  useEffect(() => {
+    document.body.classList.toggle("dark-theme", theme === "dark");
+  }, [theme]);
 
   // Navigation links (matching views in main shell)
   const navLinks = [
@@ -21,66 +26,45 @@ const Navbar = ({ onNav }) => {
   }
 
   return (
-    // Sticky/fixed navbar with shadow, high-contrast/brand polish
-    <header className="sticky top-0 z-50 shadow-2xl transition-all duration-300 bg-primary/95 dark:bg-darkCard/95 backdrop-blur-sm">
-      <nav className="max-w-5xl mx-auto px-4 flex h-16 items-center justify-between select-none">
-        {/* LitVerse Logo / Typography Brand */}
+    <header className="navbar">
+      <nav className="navbar-content" role="navigation">
+        {/* Logo box and brand */}
         <a
           href="/"
           aria-label="LitVerse Home"
-          className="flex items-center gap-3 group"
+          className="flex items-center group"
           tabIndex={0}
+          style={{ textDecoration: 'none' }}
         >
-          {/* Logo box */}
-          <span className="w-9 h-9 flex items-center justify-center rounded-xl bg-accent text-primary font-extrabold text-2xl shadow ring-2 ring-accent/30 group-hover:scale-105 group-hover:ring-4 transition-all">
-            {/* Can insert SVG, for now T typographic */}
-            L
-          </span>
-          {/* Typo Brand Name */}
-          <span className="font-extrabold text-white dark:text-accent text-[1.45rem] tracking-tight leading-none font-sans drop-shadow-lg">
-            LitVerse
-          </span>
+          <span className="logo-box">L</span>
+          <span className="nav-brand">LitVerse</span>
         </a>
-        {/* Navigation + Theme Toggle */}
-        <div className="flex gap-6 items-center">
+        <div className="nav-links">
           {navLinks.map((link) => (
-            <a
+            <button
               key={link.slug}
-              href={"#" + link.slug}
               onClick={(evt) => handleNavLink(link.slug, evt)}
-              className="relative font-semibold px-3 py-2 rounded-lg text-white/90 dark:text-accent/90 hover:text-accent dark:hover:text-accent/80 transition-colors duration-200 tracking-wide
-              focus:ring-2 focus:ring-accent focus:outline-none
-              hover:bg-white/10 dark:hover:bg-accent/10
-              before:absolute before:-bottom-1 before:left-2 before:right-2 before:h-[3px] before:bg-accent before:opacity-0 group-hover:opacity-80 before:transition-all"
+              className="nav-link"
               tabIndex={0}
+              type="button"
             >
               {link.name}
-            </a>
+            </button>
           ))}
-          {/* Theme Toggle: visually prominent circular, animated icon */}
+          {/* Theme Toggle: visually prominent circular icon */}
           <button
-            className={`relative ml-3 flex items-center justify-center w-11 h-11 rounded-full shadow-2xl bg-white/80 dark:bg-darkCard border-2 border-accent/40 text-primary dark:text-accent hover:bg-accent hover:text-primary dark:hover:bg-accent dark:hover:text-primary transition-all
-            ring-2 ring-transparent focus:ring-accent/70 hover:scale-105`}
+            className="theme-toggle-btn"
             onClick={toggleTheme}
             aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
             title="Toggle theme"
             tabIndex={0}
+            type="button"
           >
             {theme === "dark" ? (
-              <span
-                role="img"
-                aria-label="Dark mode"
-                className="text-2xl transition-all"
-              >🌙</span>
+              <span role="img" aria-label="Dark mode">🌙</span>
             ) : (
-              <span
-                role="img"
-                aria-label="Light mode"
-                className="text-2xl transition-all"
-              >☀️</span>
+              <span role="img" aria-label="Light mode">☀️</span>
             )}
-            {/* Micro-interaction highlight pulse */}
-            <span className="absolute inset-0 rounded-full pointer-events-none animate-[ping_1s_ease-in-out_1] opacity-0 group-hover:opacity-20" />
           </button>
         </div>
       </nav>
