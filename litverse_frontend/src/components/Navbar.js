@@ -8,7 +8,7 @@ import { useTheme } from "../ThemeContext";
 const Navbar = ({ onNav }) => {
   const { theme, toggleTheme } = useTheme();
 
-  // Define navigation: prefer handler if available, else href fallback.
+  // Navigation routes
   const navLinks = [
     { name: "Home", slug: "home" },
     { name: "Browse Novels", slug: "browse" },
